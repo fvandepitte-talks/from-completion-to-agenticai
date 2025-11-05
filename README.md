@@ -17,16 +17,6 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 4. **Tools** → HR process automation with function calling
 5. **Orchestration** → Multi-agent HR workflows
 
-## 📓 Notebook Structure
-
-| Notebook | Topic | Conference Demo Scenario | Duration |
-|----------|-------|--------------------------|----------|
-| [01_foundation](notebooks/01_foundation_llm_text_generation.ipynb) | LLM Text Generation | Event Description Generator | 8 min |
-| [02_conversation](notebooks/02_conversational_conference_assistant.ipynb) | Conversational AI | Speaker Inquiry Chatbot | 8 min |
-| [03_knowledge](notebooks/03_smart_conference_knowledge.ipynb) | RAG & Knowledge | Conference FAQ System | 10 min |
-| [04_tools](notebooks/04_conference_automation_agent.ipynb) | Tools & Function Calling | Speaker Scheduling Agent | 10 min |
-| [05_orchestration](notebooks/05_multi_agent_conference_workflow.ipynb) | Multi-Agent Systems | Complete Event Planning | 9 min |
-
 ## 🛠 Technical Setup
 
 ### Prerequisites
