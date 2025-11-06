@@ -12,10 +12,16 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 
 ### The Evolution Path
 1. **Foundation** → Understanding how LLMs generate text
-2. **Conversation** → From completion to HR chat assistants  
-3. **Knowledge** → Smart HR knowledge systems with RAG
-4. **Tools** → HR process automation with function calling
-5. **Orchestration** → Multi-agent HR workflows
+2. **Conversation** → From completion to conversational chat assistants  
+3. **Knowledge** → Smart knowledge systems with RAG (Retrieval-Augmented Generation)
+4. **Tools** → Function calling for data enrichment and automation
+5. **Orchestration** → Multi-agent workflows and collaboration
+
+### Demo Notebooks
+1. **[01_chat_client.ipynb](notebooks/01_chat_client.ipynb)** - Conversational AI with Azure OpenAI
+2. **[02_rag_knowledge.ipynb](notebooks/02_rag_knowledge.ipynb)** - RAG with ChromaDB and vector search
+3. **[03_tool_calling.ipynb](notebooks/03_tool_calling.ipynb)** - Function calling for Azure Dev Summit sessions
+4. **[04_agent_orchestration.ipynb](notebooks/04_agent_orchestration.ipynb)** - Multi-agent orchestration patterns with AGNO
 
 ## 🛠 Technical Setup
 
@@ -40,9 +46,9 @@ pip install -r requirements.txt
 
 ## 🚀 Quick Start
 
-1. **Setup Environment**: Follow [setup/environment_setup.md](setup/environment_setup.md)
-2. **Configure Azure**: Follow [setup/azure_setup.md](setup/azure_setup.md)  
-3. **Run Notebooks**: Start with `01_foundation_llm_text_generation.ipynb`
+1. **Setup Environment**: Run `python setup/test_environment.py` to verify all dependencies
+2. **Configure Azure**: Copy `.env.template` to `.env` and add your Azure credentials
+3. **Run Notebooks**: Start with `notebooks/01_chat_client.ipynb` and progress through each demo
 
 ## 📊 Conference Management Use Cases Demonstrated
 
@@ -62,9 +68,16 @@ pip install -r requirements.txt
 ## 🎓 Key Takeaways
 
 1. **Progressive Enhancement**: Each AI capability builds on the previous
-2. **HR-Specific Value**: AI agents can transform every HR process
+2. **Conference-Specific Value**: AI agents can transform every aspect of event management
 3. **Practical Implementation**: AGNO AI makes complex orchestration accessible
 4. **Scalable Solutions**: From single tools to complete workflow automation
+
+### Orchestration Patterns Demonstrated
+- **Sequential**: Chain agents for multi-step workflows (venue → speakers → schedule)
+- **Concurrent**: Run independent tasks in parallel for efficiency
+- **Group Chat**: Enable multi-agent collaborative problem-solving
+- **Handoff**: Intelligent task routing to specialized agents
+- **Magentic One**: Advanced patterns combining multiple orchestration strategies
 
 ## 📁 Repository Structure
 
