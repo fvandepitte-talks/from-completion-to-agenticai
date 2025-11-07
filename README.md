@@ -83,8 +83,6 @@ pip install -r requirements.txt
 
 ```
 ├── notebooks/              # Jupyter notebooks for each topic
-├── data/                  # Sample HR data and documents  
-├── assets/               # Images, diagrams, and visual aids
 ├── setup/               # Environment and Azure setup guides
 ├── requirements.txt     # Python dependencies
 └── README.md           # This file
