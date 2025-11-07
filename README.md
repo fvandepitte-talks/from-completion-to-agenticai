@@ -17,7 +17,7 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 4. **Tools** → Function calling for data enrichment and automation
 5. **Orchestration** → Multi-agent workflows and collaboration
 
-### Demo Notebooks (4 notebooks covering 5 stages)
+### Demo Notebooks
 1. **[01_chat_client.ipynb](notebooks/01_chat_client.ipynb)** - Foundation & Conversational AI with Azure OpenAI
 2. **[02_rag_knowledge.ipynb](notebooks/02_rag_knowledge.ipynb)** - Knowledge: RAG with ChromaDB and vector search
 3. **[03_tool_calling.ipynb](notebooks/03_tool_calling.ipynb)** - Tools: Function calling for Azure Dev Summit sessions
