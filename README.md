@@ -18,10 +18,10 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 5. **Orchestration** → Multi-agent workflows and collaboration
 
 ### Demo Notebooks
-1. **[01_chat_client.ipynb](notebooks/01_chat_client.ipynb)** - Conversational AI with Azure OpenAI
-2. **[02_rag_knowledge.ipynb](notebooks/02_rag_knowledge.ipynb)** - RAG with ChromaDB and vector search
-3. **[03_tool_calling.ipynb](notebooks/03_tool_calling.ipynb)** - Function calling for Azure Dev Summit sessions
-4. **[04_agent_orchestration.ipynb](notebooks/04_agent_orchestration.ipynb)** - Multi-agent orchestration patterns with AGNO
+1. **[01_chat_client.ipynb](notebooks/01_chat_client.ipynb)** - Foundation & Conversational AI with Azure OpenAI
+2. **[02_rag_knowledge.ipynb](notebooks/02_rag_knowledge.ipynb)** - Knowledge: RAG with ChromaDB and vector search
+3. **[03_tool_calling.ipynb](notebooks/03_tool_calling.ipynb)** - Tools: Function calling for Azure Dev Summit sessions
+4. **[04_agent_orchestration.ipynb](notebooks/04_agent_orchestration.ipynb)** - Orchestration: Multi-agent patterns with AGNO
 
 ## 🛠 Technical Setup
 
@@ -41,7 +41,7 @@ cd from-completion-to-agenticai
 pip install -r requirements.txt
 
 # Setup Azure credentials
-# See setup/azure_setup.md
+# See setup/environment_setup.md
 ```
 
 ## 🚀 Quick Start
@@ -82,22 +82,30 @@ pip install -r requirements.txt
 ## 📁 Repository Structure
 
 ```
-├── notebooks/              # Jupyter notebooks for each topic
-├── setup/               # Environment and Azure setup guides
-├── requirements.txt     # Python dependencies
-└── README.md           # This file
+├── notebooks/                      # Jupyter notebooks for each demo
+│   ├── 01_chat_client.ipynb       # Foundation & Conversation demo
+│   ├── 02_rag_knowledge.ipynb     # RAG knowledge system demo
+│   ├── 03_tool_calling.ipynb      # Function calling demo
+│   └── 04_agent_orchestration.ipynb # Multi-agent orchestration demo
+├── setup/                          # Environment setup guides and testing
+│   ├── environment_setup.md        # Detailed setup instructions
+│   └── test_environment.py         # Environment validation script
+├── .env.template                   # Azure credentials template
+├── requirements.txt                # Python dependencies
+├── FromCompletionToAgenticAI.pdf   # Presentation slides
+└── README.md                       # This file
 ```
 
 ## 🤝 Contributing
 
 This talk is designed to be adaptable. Feel free to:
 - Modify examples for your industry
-- Add your own HR use cases
+- Add your own conference management use cases
 - Extend with additional AGNO AI features
 
 ## 📄 License
 
-MIT License - See LICENSE file for details
+MIT License (see repository for details)
 
 ---
 

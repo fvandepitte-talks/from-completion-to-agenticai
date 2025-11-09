@@ -101,7 +101,7 @@ jupyter lab
 jupyter notebook
 ```
 
-Navigate to `notebooks/` and open `01_foundation_llm_text_generation.ipynb`
+Navigate to `notebooks/` and open `01_chat_client.ipynb`
 
 ## 🛠 Troubleshooting
 
@@ -165,4 +165,4 @@ Once setup is complete, you can run all notebooks successfully for your conferen
 
 ---
 
-**Next Step**: Open `notebooks/01_foundation_llm_text_generation.ipynb` and start your AI journey!
+**Next Step**: Open `notebooks/01_chat_client.ipynb` and start your AI journey!
