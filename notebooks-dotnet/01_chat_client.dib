@@ -1,0 +1,327 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"aliases":[],"name":"csharp"}]}}
+
+#!markdown
+
+# Demo 1: Foundation - Simple Conversational AI
+
+This notebook demonstrates the evolution from basic completion to conversational AI using Azure OpenAI with .NET.
+
+## What We'll Cover
+1. **Setup** - Initialize Azure OpenAI client with secure authentication
+2. **Single Question** - Ask about conferences to demonstrate basic capabilities
+3. **Stateless Limitation** - Show how context is lost without conversation history
+4. **Conversational Context** - Demonstrate how to maintain context across interactions
+
+#!markdown
+
+## 1. Setup: Azure OpenAI Client Configuration
+
+Following Azure best practices, we'll use environment variables for secure configuration and set up proper error handling.
+
+#!csharp
+
+// Install required NuGet packages
+#r "nuget: Azure.AI.OpenAI, 2.1.0"
+#r "nuget: DotNetEnv, 3.1.1"
+#r "nuget: Azure.Identity, 1.13.1"
+
+using Azure;
+using Azure.AI.OpenAI;
+using Azure.AI.OpenAI.Chat;
+using DotNetEnv;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+
+// Load environment variables from .env file
+Env.Load();
+
+// Azure OpenAI Configuration
+var azureOpenAIEndpoint = Environment.GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
+var azureOpenAIApiKey = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
+var azureOpenAIDeployment = Environment.GetEnvironmentVariable("AZURE_OPENAI_DEPLOYMENT") ?? "gpt-4.1-nano";
+var azureOpenAIApiVersion = Environment.GetEnvironmentVariable("AZURE_OPENAI_API_VERSION") ?? "2024-12-01-preview";
+
+// Validate configuration
+if (string.IsNullOrEmpty(azureOpenAIEndpoint) || string.IsNullOrEmpty(azureOpenAIApiKey))
+{
+    throw new InvalidOperationException("Missing required Azure OpenAI configuration. Please check your .env file.");
+}
+
+// Initialize Azure OpenAI client following Azure best practices
+// Using secure credential management (environment variables, not hardcoded keys)
+var client = new AzureOpenAIClient(
+    new Uri(azureOpenAIEndpoint),
+    new AzureKeyCredential(azureOpenAIApiKey)
+);
+
+Console.WriteLine("✅ Azure OpenAI client initialized successfully!");
+Console.WriteLine($"📍 Endpoint: {azureOpenAIEndpoint}");
+Console.WriteLine($"🚀 Model Deployment: {azureOpenAIDeployment}");
+Console.WriteLine($"📅 API Version: {azureOpenAIApiVersion}");
+
+// Demo conference data from environment
+var demoConference = Environment.GetEnvironmentVariable("DEMO_CONFERENCE_NAME") ?? "AI Innovation Summit 2025";
+var demoVenue = Environment.GetEnvironmentVariable("DEMO_VENUE") ?? "Tech Convention Center";
+var demoDates = Environment.GetEnvironmentVariable("DEMO_DATES") ?? "March 15-17, 2025";
+
+Console.WriteLine($"\n🎯 Demo Context: {demoConference} at {demoVenue} ({demoDates})");
+
+#!markdown
+
+## 2. Single Question: Basic Chat Completion
+
+Let's ask the AI about conference management to see its foundational capabilities. This demonstrates the basic completion functionality.
+
+#!csharp
+
+// Helper function to call Azure OpenAI with error handling
+async Task<string> AskAI(List<ChatMessage> messages, bool showFullResponse = false)
+{
+    try
+    {
+        var chatClient = client.GetChatClient(azureOpenAIDeployment);
+        
+        var chatCompletionOptions = new ChatCompletionOptions
+        {
+            MaxOutputTokenCount = 1000,
+            Temperature = 0.7f
+        };
+        
+        var response = await chatClient.CompleteChatAsync(messages, chatCompletionOptions);
+        
+        if (showFullResponse)
+        {
+            Console.WriteLine("🔍 Full API Response:");
+            Console.WriteLine(JsonSerializer.Serialize(response, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("\n" + new string('=', 50) + "\n");
+        }
+        
+        return response.Value.Content[0].Text;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Error calling Azure OpenAI: {ex.Message}");
+        return null;
+    }
+}
+
+// First question about conference management
+Console.WriteLine("🎤 Question 1: What are some good conferences in Europe to attend as a tech professional?");
+Console.WriteLine(new string('-', 70));
+
+var messages = new List<ChatMessage>
+{
+    new SystemChatMessage("You are an expert conference management consultant with 15+ years of experience organizing large-scale events."),
+    new UserChatMessage("What are some good conferences in Europe to attend as a tech professional?")
+};
+
+var response = await AskAI(messages);
+if (response != null)
+{
+    Console.WriteLine("🤖 AI Response:");
+    Console.WriteLine(response);
+}
+else
+{
+    Console.WriteLine("Failed to get response from AI");
+}
+
+#!markdown
+
+## 3. Follow-up Question WITHOUT Context: Demonstrating Statelessness
+
+Now let's ask a follow-up question without providing the conversation history. This will show how the AI loses context between separate requests - a key limitation we need to solve.
+
+#!csharp
+
+// Follow-up question WITHOUT conversation history
+Console.WriteLine("🎤 Follow-up Question (WITHOUT context): What would be the best conference to attend, given that I live in Belgium?");
+Console.WriteLine(new string('-', 70));
+
+// Notice: We're starting fresh - no conversation history!
+var messagesWithoutContext = new List<ChatMessage>
+{
+    new SystemChatMessage("You are an expert conference management consultant with 15+ years of experience organizing large-scale events."),
+    new UserChatMessage("What would be the best conference to attend, given that I live in Belgium?")
+};
+
+var responseWithoutContext = await AskAI(messagesWithoutContext);
+if (responseWithoutContext != null)
+{
+    Console.WriteLine("🤖 AI Response (Without Context):");
+    Console.WriteLine(responseWithoutContext);
+    Console.WriteLine("\n⚠️  Notice: The AI doesn't have context from the previous conversation!");
+    Console.WriteLine("   It has to ask for clarification or make general assumptions.");
+}
+else
+{
+    Console.WriteLine("Failed to get response from AI");
+}
+
+#!markdown
+
+## 4. Follow-up Question WITH Context: True Conversational AI
+
+Now let's demonstrate proper conversational AI by maintaining the conversation history. This is the foundation for building intelligent, context-aware systems.
+
+#!csharp
+
+// Follow-up question WITH full conversation history
+Console.WriteLine("🎤 Follow-up Question (WITH context): What would be the best conference to attend, given that I live in Belgium?");
+Console.WriteLine(new string('-', 70));
+
+// Build conversation history - this is the key to conversational AI!
+var conversationHistory = new List<ChatMessage>
+{
+    new SystemChatMessage("You are an expert conference management consultant with 15+ years of experience organizing large-scale events."),
+    new UserChatMessage("What are some good conferences in Europe to attend as a tech professional?"),
+    new AssistantChatMessage(response), // Include the previous AI response
+    new UserChatMessage("What would be the best conference to attend, given that I live in Belgium?") // Our follow-up question
+};
+
+var responseWithContext = await AskAI(conversationHistory);
+if (responseWithContext != null)
+{
+    Console.WriteLine("🤖 AI Response (With Context):");
+    Console.WriteLine(responseWithContext);
+    Console.WriteLine("\n✅ Notice: The AI now has context from the previous conversation!");
+    Console.WriteLine("   It can provide more relevant, personalized recommendations.");
+}
+else
+{
+    Console.WriteLine("Failed to get response from AI");
+}
+
+#!markdown
+
+## 5. Conversation Summary: Key Learnings
+
+Let's implement a simple conversation manager to demonstrate the evolution from stateless to stateful AI interactions.
+
+#!csharp
+
+/// <summary>
+/// A basic conversation manager that maintains context across multiple interactions.
+/// This demonstrates the foundation for more sophisticated AI systems.
+/// </summary>
+public class SimpleConversationManager
+{
+    private readonly List<ChatMessage> _messages;
+    private readonly AzureOpenAIClient _client;
+    private readonly string _deployment;
+    
+    public SimpleConversationManager(AzureOpenAIClient client, string deployment, string systemPrompt)
+    {
+        _client = client;
+        _deployment = deployment;
+        _messages = new List<ChatMessage>
+        {
+            new SystemChatMessage(systemPrompt)
+        };
+    }
+    
+    public async Task<string> SendMessageAsync(string userMessage)
+    {
+        // Add user message to history
+        _messages.Add(new UserChatMessage(userMessage));
+        
+        // Get AI response
+        var chatClient = _client.GetChatClient(_deployment);
+        var chatCompletionOptions = new ChatCompletionOptions
+        {
+            MaxOutputTokenCount = 1000,
+            Temperature = 0.7f
+        };
+        
+        var response = await chatClient.CompleteChatAsync(_messages, chatCompletionOptions);
+        var assistantMessage = response.Value.Content[0].Text;
+        
+        // Add assistant response to history
+        _messages.Add(new AssistantChatMessage(assistantMessage));
+        
+        return assistantMessage;
+    }
+    
+    public List<ChatMessage> GetConversationHistory() => new List<ChatMessage>(_messages);
+    
+    public void ClearHistory(string systemPrompt)
+    {
+        _messages.Clear();
+        _messages.Add(new SystemChatMessage(systemPrompt));
+    }
+}
+
+// Create a conversation manager
+var conversationManager = new SimpleConversationManager(
+    client,
+    azureOpenAIDeployment,
+    "You are an expert conference management consultant with 15+ years of experience organizing large-scale events."
+);
+
+Console.WriteLine("🎯 Demonstrating Conversation Manager");
+Console.WriteLine(new string('=', 70));
+
+// First question
+Console.WriteLine("\n👤 User: What are the key challenges in organizing a tech conference?");
+var answer1 = await conversationManager.SendMessageAsync("What are the key challenges in organizing a tech conference?");
+Console.WriteLine($"🤖 Assistant: {answer1}");
+
+// Follow-up question - context is automatically maintained!
+Console.WriteLine("\n👤 User: How can I address the first challenge you mentioned?");
+var answer2 = await conversationManager.SendMessageAsync("How can I address the first challenge you mentioned?");
+Console.WriteLine($"🤖 Assistant: {answer2}");
+
+// Another follow-up
+Console.WriteLine("\n👤 User: What tools would you recommend for that?");
+var answer3 = await conversationManager.SendMessageAsync("What tools would you recommend for that?");
+Console.WriteLine($"🤖 Assistant: {answer3}");
+
+Console.WriteLine($"\n📊 Conversation history contains {conversationManager.GetConversationHistory().Count} messages");
+
+#!markdown
+
+## Key Takeaways: From Completion to Conversation
+
+### What We Demonstrated
+
+1. **🔧 Setup & Security**: Proper Azure OpenAI configuration using environment variables and secure credential management
+2. **💬 Basic Completion**: Single-turn question-answer using Azure OpenAI Chat API
+3. **⚠️ Statelessness Problem**: How context is lost without conversation history
+4. **✅ Conversational AI**: Maintaining context through message history
+5. **🎯 Conversation Manager**: Building a reusable class to simplify context management
+
+### Business Impact for Conference Management
+
+- **Improved Attendee Experience**: Context-aware responses for multi-turn conversations
+- **Efficient Planning**: AI remembers previous discussions about event requirements
+- **Better Support**: Follow-up questions don't require restating context
+- **Scalability**: Foundation for building sophisticated conference management assistants
+
+### Next Steps
+
+In the following notebooks, we'll build on this foundation:
+- **Demo 2**: Add RAG (Retrieval-Augmented Generation) for knowledge-based responses
+- **Demo 3**: Implement function calling for data enrichment and actions
+- **Demo 4**: Orchestrate multiple specialized agents for complex workflows
+
+### Technical Notes
+
+**Azure OpenAI .NET SDK Features Used:**
+- `AzureOpenAIClient` with API key authentication
+- `ChatClient` for chat completions
+- `ChatMessage` types: System, User, Assistant
+- `ChatCompletionOptions` for controlling generation parameters
+
+**Best Practices Demonstrated:**
+- Environment variable configuration
+- Error handling and validation
+- Conversation history management
+- Reusable conversation manager pattern
+
+---
+
+**Ready for the next level?** Continue to Demo 2 for RAG-enhanced knowledge systems! 🚀
