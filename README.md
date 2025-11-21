@@ -6,7 +6,9 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 
 **Duration:** 1 hour (50 min presentation + 10 min Q&A)  
 **Audience:** Technical professionals  
-**Framework:** AGNO AI with Azure AI Foundry  
+**Frameworks:** 
+- **Python**: AGNO AI with Azure AI Foundry
+- **.NET**: Microsoft Semantic Kernel with Azure OpenAI
 
 ## 📚 Learning Journey
 
@@ -18,37 +20,79 @@ A comprehensive technical talk exploring the evolution of AI from simple text co
 5. **Orchestration** → Multi-agent workflows and collaboration
 
 ### Demo Notebooks
+
+#### Python (Jupyter Notebooks)
 1. **[01_chat_client.ipynb](notebooks/01_chat_client.ipynb)** - Foundation & Conversational AI with Azure OpenAI
 2. **[02_rag_knowledge.ipynb](notebooks/02_rag_knowledge.ipynb)** - Knowledge: RAG with ChromaDB and vector search
 3. **[03_tool_calling.ipynb](notebooks/03_tool_calling.ipynb)** - Tools: Function calling for Azure Dev Summit sessions
 4. **[04_agent_orchestration.ipynb](notebooks/04_agent_orchestration.ipynb)** - Orchestration: Multi-agent patterns with AGNO
 
+#### .NET (Polyglot Notebooks)
+1. **[01_chat_client.dib](notebooks-dotnet/01_chat_client.dib)** - Foundation & Conversational AI with Azure.AI.OpenAI SDK
+2. **[02_rag_knowledge.dib](notebooks-dotnet/02_rag_knowledge.dib)** - Knowledge: RAG with Semantic Kernel
+3. **[03_tool_calling.dib](notebooks-dotnet/03_tool_calling.dib)** - Tools: Function calling with Azure OpenAI
+4. **[04_agent_orchestration.dib](notebooks-dotnet/04_agent_orchestration.dib)** - Orchestration: Multi-agent patterns with Semantic Kernel
+
 ## 🛠 Technical Setup
 
 ### Prerequisites
+
+#### For Python Notebooks
 - Python 3.9+
 - Jupyter Notebook/Lab
 - Azure AI Foundry access
 - AGNO AI framework
 
+#### For .NET Notebooks
+- .NET SDK 8.0 or later
+- Visual Studio Code with Polyglot Notebooks extension
+- Azure OpenAI access
+- Microsoft Semantic Kernel
+
 ### Installation
+
+#### Python Setup
 ```bash
 # Clone and setup
 git clone <repo-url>
 cd from-completion-to-agenticai
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
 # Setup Azure credentials
-# See setup/environment_setup.md
+cp .env.template .env
+# Edit .env with your Azure credentials
+```
+
+#### .NET Setup
+```bash
+# Clone and setup (if not already done)
+git clone <repo-url>
+cd from-completion-to-agenticai
+
+# Install .NET SDK (if not already installed)
+# Download from https://dotnet.microsoft.com/download
+
+# Install VS Code Polyglot Notebooks extension
+# https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.dotnet-interactive-vscode
+
+# Setup Azure credentials (same .env file as Python)
+cp .env.template .env
+# Edit .env with your Azure credentials
 ```
 
 ## 🚀 Quick Start
 
+### Python Notebooks
 1. **Setup Environment**: Run `python setup/test_environment.py` to verify all dependencies
 2. **Configure Azure**: Copy `.env.template` to `.env` and add your Azure credentials
 3. **Run Notebooks**: Start with `notebooks/01_chat_client.ipynb` and progress through each demo
+
+### .NET Notebooks
+1. **Install VS Code Extension**: Install the "Polyglot Notebooks" extension in VS Code
+2. **Configure Azure**: Use the same `.env` file as Python notebooks
+3. **Run Notebooks**: Open `notebooks-dotnet/01_chat_client.dib` in VS Code and run each cell
 
 ## 📊 Conference Management Use Cases Demonstrated
 
@@ -82,18 +126,23 @@ pip install -r requirements.txt
 ## 📁 Repository Structure
 
 ```
-├── notebooks/                      # Jupyter notebooks for each demo
-│   ├── 01_chat_client.ipynb       # Foundation & Conversation demo
-│   ├── 02_rag_knowledge.ipynb     # RAG knowledge system demo
-│   ├── 03_tool_calling.ipynb      # Function calling demo
-│   └── 04_agent_orchestration.ipynb # Multi-agent orchestration demo
-├── setup/                          # Environment setup guides and testing
-│   ├── environment_setup.md        # Detailed setup instructions
-│   └── test_environment.py         # Environment validation script
-├── .env.template                   # Azure credentials template
-├── requirements.txt                # Python dependencies
-├── FromCompletionToAgenticAI.pdf   # Presentation slides
-└── README.md                       # This file
+├── notebooks/                          # Python Jupyter notebooks
+│   ├── 01_chat_client.ipynb           # Foundation & Conversation demo
+│   ├── 02_rag_knowledge.ipynb         # RAG knowledge system demo
+│   ├── 03_tool_calling.ipynb          # Function calling demo
+│   └── 04_agent_orchestration.ipynb   # Multi-agent orchestration demo (AGNO AI)
+├── notebooks-dotnet/                   # .NET Polyglot notebooks
+│   ├── 01_chat_client.dib             # Foundation & Conversation demo (Azure.AI.OpenAI)
+│   ├── 02_rag_knowledge.dib           # RAG knowledge system demo (Semantic Kernel)
+│   ├── 03_tool_calling.dib            # Function calling demo (Azure OpenAI)
+│   └── 04_agent_orchestration.dib     # Multi-agent orchestration demo (Semantic Kernel)
+├── setup/                              # Environment setup guides and testing
+│   ├── environment_setup.md            # Detailed setup instructions
+│   └── test_environment.py             # Environment validation script
+├── .env.template                       # Azure credentials template
+├── requirements.txt                    # Python dependencies
+├── FromCompletionToAgenticAI.pdf       # Presentation slides
+└── README.md                           # This file
 ```
 
 ## 🤝 Contributing
